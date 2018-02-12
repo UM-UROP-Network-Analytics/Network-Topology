@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 #%matplotlib inline
-import Elasticsearch
-import scan
-import datetime, timedelta
+from elasticsearch import Elasticsearch
+from elasticsearch.helpers import scan
+from datetime import datetime, timedelta
 #import math
 #import matplotlib.pyplot as plt
 #import matplotlib.mlab as mlab
