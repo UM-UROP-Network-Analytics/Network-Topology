@@ -1,11 +1,12 @@
+#!/usr/bin/env python3
 #%matplotlib inline
 import Elasticsearch
 import scan
 import datetime, timedelta
-'''import math
-import matplotlib.pyplot as plt
-import matplotlib.mlab as mlab
-from matplotlib import gridspec'''
+#import math
+#import matplotlib.pyplot as plt
+#import matplotlib.mlab as mlab
+#from matplotlib import gridspec
 import numpy as np
 #import pandas as pd
 import psycopg2
