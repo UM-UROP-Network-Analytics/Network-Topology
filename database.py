@@ -1,15 +1,13 @@
-%matplotlib inline
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import scan
-from datetime import datetime, timedelta
-import math
+#%matplotlib inline
+import Elasticsearch
+import scan
+import datetime, timedelta
+'''import math
 import matplotlib.pyplot as plt
 import matplotlib.mlab as mlab
-from matplotlib import gridspec
-from datetime import datetime
+from matplotlib import gridspec'''
 import numpy as np
-import pandas as pd
-import csv
+#import pandas as pd
 import psycopg2
 
 es = Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
