@@ -13,7 +13,7 @@ import psycopg2
 
 es = Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = "network_weather-2017.11.*"
-
+print("set es")
 my_query = {}
 
 # CHANGE SO IT RETREIVES ONLY UNIQUE hashes.
@@ -46,7 +46,9 @@ start_date = '20171115T000000Z'
 end_date = '20171115T002059Z'
 src_lists = ['141.34.200.29','134.158.123.184','204.99.128.11']
 src_to_dest = {}
+print("set sources")
 for x in range (0,len(src_lists)):
+  print("loop "x)
     my_query = {
         "size":1,
         "_source": {
