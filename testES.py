@@ -48,7 +48,7 @@ src_lists = ['141.34.200.29','134.158.123.184','204.99.128.11']
 src_to_dest = {}
 print("set sources")
 for x in range (0,len(src_lists)):
-    print("loop " + x)
+    print("loop " + str(x))
     my_query = {
         "size":1,
         "_source": {
