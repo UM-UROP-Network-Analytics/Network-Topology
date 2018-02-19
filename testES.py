@@ -10,7 +10,11 @@ from datetime import datetime, timedelta
 import numpy as np
 #import pandas as pd
 import psycopg2
+import logger
 
+tracer = logging.getLogger('elasticsearch.trace')
+tracer.setLevel(logging.INFO)
+tracer.addHandler(logging.FileHandler('/tmp/es_trace.log'))
 es = Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = "network_weather-2017.11.*"
 print("set es")
