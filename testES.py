@@ -10,7 +10,7 @@ from datetime import datetime, timedelta
 import numpy as np
 #import pandas as pd
 import psycopg2
-import logger
+import logging
 
 tracer = logging.getLogger('elasticsearch')
 tracer.setLevel(logging.INFO)
