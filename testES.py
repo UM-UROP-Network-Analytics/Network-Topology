@@ -12,9 +12,9 @@ import numpy as np
 import psycopg2
 import logger
 
-tracer = logging.getLogger('elasticsearch.trace')
+tracer = logging.getLogger('elasticsearch')
 tracer.setLevel(logging.INFO)
-tracer.addHandler(logging.FileHandler('/tmp/es_trace.log'))
+tracer.addHandler(logging.FileHandler('/tmp/es.log'))
 es = Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = "network_weather-2017.11.*"
 print("set es")
