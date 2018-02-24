@@ -124,12 +124,14 @@ for x in range (0,len(src_lists)):
                     src_to_dest[rt_src][rt_dest][current_rt]['count'] = 1
                     src_to_dest[rt_src][rt_dest][current_rt]['hop_list'] = rt_hops
                     cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, current_rt[2:], 1, rt_hops))
+                    conn.commit()
                     print("Insert 1")
             else:
                 src_to_dest[rt_src][rt_dest] = {'rt1':{}}
                 src_to_dest[rt_src][rt_dest]['rt1']['count'] = 1
                 src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops
                 cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))
+                conn.commit()
                 print("Insert 2")
             dupe_rt = 0
     #completely new source
@@ -137,5 +139,8 @@ for x in range (0,len(src_lists)):
             src_to_dest[rt_src] = {rt_dest:{'rt1':{}}}
             src_to_dest[rt_src][rt_dest]['rt1']['count'] = 1
             src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops  
-            cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))    
+            cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))
+            conn.commit()    
             print("Insert 3")
+cur.close()
+conn.close()
