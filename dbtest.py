@@ -127,7 +127,7 @@ for x in range (0,len(src_lists)):
                     src_to_dest[rt_src][rt_dest][current_rt] = {}
                     src_to_dest[rt_src][rt_dest][current_rt]['count'] = 1
                     src_to_dest[rt_src][rt_dest][current_rt]['hop_list'] = rt_hops
-                     cur.execute("UPDATE test1 SET (src, dest, rtnum, count, hops) = (%s, %s, %s, %s, %s)", (rt_src, rt_dest, current_rt[2:], 1, rt_hops))
+                    cur.execute("UPDATE test1 SET (src, dest, rtnum, count, hops) = (%s, %s, %s, %s, %s)", (rt_src, rt_dest, current_rt[2:], 1, rt_hops))
                     conn.commit()
                     print("Insert 1")
             else:
