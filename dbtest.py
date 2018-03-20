@@ -107,6 +107,7 @@ for x in range (0,len(src_lists)):
     #print(results)
     #print("IWFUQG8FOWHIFHOIWFQOF")
     #print(results2)
+    data_size = len(results['aggregations']['grouped_by_hash']['buckets'])
     for i in range(0, data_size):
         rt_src = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
         rt_src_host = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_host']
