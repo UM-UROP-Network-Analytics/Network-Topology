@@ -102,7 +102,7 @@ for x in range (0,len(src_lists)):
     }
     results = es.search(body=my_query, index=my_index, request_timeout=100000)
     #results2 = es.search(body=my_query, index=my_index[1], request_timeout=10)
-    print(results['aggregations']['grouped_by_hash']['buckets'])
+    #print(results['aggregations']['grouped_by_hash']['buckets'])
     #print("whuhwwhhwfhiw")
     #print(results)
     #print("IWFUQG8FOWHIFHOIWFQOF")
@@ -127,16 +127,16 @@ for x in range (0,len(src_lists)):
                     src_to_dest[rt_src][rt_dest][current_rt] = {}
                     src_to_dest[rt_src][rt_dest][current_rt]['count'] = 1
                     src_to_dest[rt_src][rt_dest][current_rt]['hop_list'] = rt_hops
-                    cur.execute("UPDATE test1 SET (src, dest, rtnum, count, hops) = (%s, %s, %s, %s, %s)", (rt_src, rt_dest, current_rt[2:], 1, rt_hops))
+                    cur.execute("UPDATE test1 SET (src, dest, rtnum, count, hops) = (%s, %s, %s, %s, %s) WHERE hops = (%s)", (rt_src, rt_dest, current_rt[2:], 1, rt_hops, rt_hops))
                     conn.commit()
-                    print("Insert 1")
+                    #print("Insert 1")
             else:
                 src_to_dest[rt_src][rt_dest] = {'rt1':{}}
                 src_to_dest[rt_src][rt_dest]['rt1']['count'] = 1
                 src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops
                 cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))
                 conn.commit()
-                print("Insert 2")
+                #print("Insert 2")
             dupe_rt = 0
     #completely new source
         else:
@@ -145,6 +145,6 @@ for x in range (0,len(src_lists)):
             src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops  
             cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))
             conn.commit()    
-            print("Insert 3")
+            #print("Insert 3")
 cur.close()
 conn.close()
