@@ -157,52 +157,52 @@ for x in range (0,len(src_lists)):
            }
         }
     }
-    results = es.search(body=my_query, index=my_index, request_timeout=100000)
-    print('generated results')
+results = es.search(body=my_query, index=my_index, request_timeout=100000)
+print('generated results')
     #results2 = es.search(body=my_query, index=my_index[1], request_timeout=10)
     #print(results['aggregations']['grouped_by_hash']['buckets'])
     #print("whuhwwhhwfhiw")
     #print(results)
     #print("IWFUQG8FOWHIFHOIWFQOF")
     #print(results2)
-    data_size = len(results['aggregations']['grouped_by_hash']['buckets'])
-    for i in range(0, data_size):
-        rt_src = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
-        rt_src_host = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_host']
-        rt_dest = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
-        rt_dest_host = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_host']
-        rt_hops = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['hops']
-        dupe_rt = 0
-        if rt_src in src_to_dest.keys():
-            if rt_dest in src_to_dest[rt_src].keys():
-                current_rt = 'rt1'
-                for x in range(0, len(src_to_dest[rt_src][rt_dest])):
-                    if src_to_dest[rt_src][rt_dest][current_rt]['hop_list'] == rt_hops:
-                        src_to_dest[rt_src][rt_dest][current_rt]['count'] += 1
-                        dupe_rt = 1
-                    current_rt = 'rt' + str(x+2)
-                if (dupe_rt == 0):
-                    src_to_dest[rt_src][rt_dest][current_rt] = {}
-                    src_to_dest[rt_src][rt_dest][current_rt]['count'] = 1
-                    src_to_dest[rt_src][rt_dest][current_rt]['hop_list'] = rt_hops
-                    cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, current_rt[2:], 1, rt_hops))
-                    conn.commit()
-                    #print("Insert 1")
-            else:
-                src_to_dest[rt_src][rt_dest] = {'rt1':{}}
-                src_to_dest[rt_src][rt_dest]['rt1']['count'] = 1
-                src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops
-                cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))
+data_size = len(results['aggregations']['grouped_by_hash']['buckets'])
+for i in range(0, data_size):
+    rt_src = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
+    rt_src_host = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_host']
+    rt_dest = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
+    rt_dest_host = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_host']
+    rt_hops = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['hops']
+    dupe_rt = 0
+    if rt_src in src_to_dest.keys():
+        if rt_dest in src_to_dest[rt_src].keys():
+            current_rt = 'rt1'
+            for x in range(0, len(src_to_dest[rt_src][rt_dest])):
+                if src_to_dest[rt_src][rt_dest][current_rt]['hop_list'] == rt_hops:
+                    src_to_dest[rt_src][rt_dest][current_rt]['count'] += 1
+                    dupe_rt = 1
+                current_rt = 'rt' + str(x+2)
+            if (dupe_rt == 0):
+                src_to_dest[rt_src][rt_dest][current_rt] = {}
+                src_to_dest[rt_src][rt_dest][current_rt]['count'] = 1
+                src_to_dest[rt_src][rt_dest][current_rt]['hop_list'] = rt_hops
+                cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, current_rt[2:], 1, rt_hops))
                 conn.commit()
-                #print("Insert 2")
-            dupe_rt = 0
-    #completely new source
+                #print("Insert 1")
         else:
-            src_to_dest[rt_src] = {rt_dest:{'rt1':{}}}
+            src_to_dest[rt_src][rt_dest] = {'rt1':{}}
             src_to_dest[rt_src][rt_dest]['rt1']['count'] = 1
-            src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops  
+            src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops
             cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))
-            conn.commit()    
+            conn.commit()
+            #print("Insert 2")
+        dupe_rt = 0
+#completely new source
+    else:
+        src_to_dest[rt_src] = {rt_dest:{'rt1':{}}}
+        src_to_dest[rt_src][rt_dest]['rt1']['count'] = 1
+        src_to_dest[rt_src][rt_dest]['rt1']['hop_list'] = rt_hops  
+        cur.execute("INSERT INTO test1 (src, dest, rtnum, count, hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, 1, 1, rt_hops))
+        conn.commit()    
             #print("Insert 3")
 cur.close()
 conn.close()
