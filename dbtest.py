@@ -158,6 +158,7 @@ for x in range (0,len(src_lists)):
         }
     }
     results = es.search(body=my_query, index=my_index, request_timeout=100000)
+    print('generated results')
     #results2 = es.search(body=my_query, index=my_index[1], request_timeout=10)
     #print(results['aggregations']['grouped_by_hash']['buckets'])
     #print("whuhwwhhwfhiw")
