@@ -50,7 +50,64 @@ destSiteThroughputServer = "193.109.172.187"
 
 start_date = '20180219T000000Z'
 end_date = '20180319T000000Z'
-src_lists = ['144.92.180.76']
+my_src_query = {
+    "size":1,
+    "_source": {
+        "include": [ 'src' ]
+    },
+    'query':{
+        'bool':{
+            'must':[
+                {'range': {'timestamp': {'gte': start_date, 'lt': end_date}}},
+                #{'term': {'_type': 'traceroute'}},
+#                         {'bool':
+#                             {'should':[
+#                                 {'term': {'src': srcSiteOWDServer}},
+#                                 {'term': {'src': srcSiteThroughputServer}},
+#                                 {'term': {'src': destSiteOWDServer}},
+#                                 {'term': {'src': destSiteThroughputServer}}
+#                             ]}
+#                         }
+#                         ,
+#                         {'bool':
+#                             {'should':[
+#                                 {'term': {'dest': destSiteOWDServer}},
+#                                 {'term': {'dest': destSiteThroughputServer}},
+#                                 {'term': {'dest': srcSiteOWDServer}},
+#                                 {'term': {'dest': srcSiteThroughputServer}}
+#                             ]}
+#                         }
+            ]
+
+        }
+    },
+    "aggs": {
+        "grouped_by_hash": {
+          "terms": {  "field": "hash", "size":10000 }, #
+          "aggs": {
+              "top_hash_hits": {
+                  "top_hits": {
+                      "sort": [ { "_score": { "order": "desc" } } ],
+                      "size": 1
+                  }
+              }
+          }
+       }
+    }
+}
+
+src_results = es.search(body=my_src_query, index=my_index, request_timeout=12000)
+    
+print('grabbed src data')
+src_dict = {}
+src_data_size = len(src_results['aggregations']['grouped_by_hash']['buckets'])
+src_lists = []
+for i in range(0, src_data_size):
+    rt_src = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
+    if rt_src not in src_dict.keys():
+        src_lists.append(rt_src)
+        src_dict[rt_src] = 1
+print('processed src data') 
 src_to_dest = {}
 for x in range (0,len(src_lists)):
     my_query = {
@@ -148,3 +205,4 @@ for x in range (0,len(src_lists)):
             #print("Insert 3")
 cur.close()
 conn.close()
+print('Finished')
