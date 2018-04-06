@@ -105,7 +105,7 @@ for i in range(0, src_data_size):
     else:
     	dest_site = 'n/a'
     if ':' in rt_src:
-        cur.execute("SELECT ipv6::text FROM serverlookup WHERE ipv6::text = (%s)", (rt_src))
+        cur.execute("SELECT ipv6::text FROM serverlookup WHERE ipv6::text = (%s)", (string(rt_src)))
         if cur.fetchone() is None:
         	cur.execute("SELECT ipv4::text FROM serverlookup WHERE ipv4::text = (%s)", (rt_src))
         	if cur.fetchone() is None:
