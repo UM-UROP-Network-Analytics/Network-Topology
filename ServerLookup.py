@@ -111,11 +111,18 @@ for i in range(0, src_data_size):
 	    		cur.execute("INSERT INTO serverlookup (domain, ipv6, sitename) VALUES (%s, %s, %s)", (src_name, rt_src, src_site))
 	    		conn.commit()
 	    	else:
-	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s WHERE domain = %s", (src_name, rt_src, src_site, src_name))
+	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, WHERE domain = %s", (src_name, rt_src, src_name))
 	    		conn.commit()
+	    		cur.execute("SELECT FROM serverlookup WHERE domain = %s", (src_name,))
+	    		if cur == 'missing':
+	    			cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (src_site, src_name))
+	    			conn.commit()
 	    else:
-	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s WHERE ipv6 = %s", (src_name, rt_src, src_site, rt_src))
+	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE ipv6 = %s", (src_name, rt_src, rt_src))
 	    	conn.commit()
+	    	if cur == 'missing':
+	    		cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv6 = %s", (src_site, rt_src))
+	    		conn.commit()
 	else:
 	    cur.execute("SELECT ipv4 FROM serverlookup WHERE ipv4 = (%s)", (rt_src,))
 	    if cur.fetchone() is None:
@@ -124,11 +131,18 @@ for i in range(0, src_data_size):
 	    		cur.execute("INSERT INTO serverlookup (domain, ipv4, sitename) VALUES (%s, %s, %s)", (src_name, rt_src, src_site))
 	    		conn.commit()
 	    	else:
-	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s WHERE domain = %s", (src_name, rt_src, src_site, src_name))
+	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, WHERE domain = %s", (src_name, rt_src, src_name))
 	    		conn.commit()
+	    		cur.execute("SELECT FROM serverlookup WHERE domain = %s", (src_name,))
+	    		if cur == 'missing':
+	    			cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (src_site, src_name))
+	    			conn.commit()
 	    else:
-	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s WHERE ipv4 = %s", (src_name, rt_src, src_site, rt_src))
+	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE ipv4 = %s", (src_name, rt_src, rt_src))
 	    	conn.commit()
+	    	if cur == 'missing':
+	    		cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv4 = %s", (src_site, rt_src))
+	    		conn.commit()
 	if ':' in rt_dest:
 	    cur.execute("SELECT ipv6 FROM serverlookup WHERE ipv6 = (%s)", (rt_dest,))
 	    if cur.fetchone() is None:
@@ -137,11 +151,18 @@ for i in range(0, src_data_size):
 	    		cur.execute("INSERT INTO serverlookup (domain, ipv6, sitename) VALUES (%s, %s, %s)", (dest_name, rt_dest, dest_site))
 	    		conn.commit()
 	    	else:
-	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s WHERE domain = %s", (dest_name, rt_dest, dest_site, dest_name))
+	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, WHERE domain = %s", (dest_name, rt_dest, dest_name))
 	    		conn.commit()
+	    		cur.execute("SELECT FROM serverlookup WHERE domain = %s", (dest_name,))
+	    		if cur == 'missing':
+	    			cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (dest_site, dest_name))
+	    			conn.commit()
 	    else:
-	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s WHERE ipv6 = %s", (dest_name, rt_dest, dest_site, rt_dest))
+	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE ipv6 = %s", (dest_name, rt_dest, rt_dest))
 	    	conn.commit()
+	    	if cur == 'missing':
+	    		cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv6 = %s", (dest_site, rt_dest))
+	    		conn.commit()
 	else:
 	    cur.execute("SELECT ipv4 FROM serverlookup WHERE ipv4 = (%s)", (rt_dest,))
 	    if cur.fetchone() is None:
@@ -150,11 +171,18 @@ for i in range(0, src_data_size):
 	    		cur.execute("INSERT INTO serverlookup (domain, ipv4, sitename) VALUES (%s, %s, %s)", (dest_name, rt_dest, dest_site))
 	    		conn.commit()
 	    	else:
-	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s WHERE domain = %s", (dest_name, rt_dest, dest_site, dest_name))
+	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, WHERE domain = %s", (dest_name, rt_dest, dest_name))
 	    		conn.commit()
+	    		cur.execute("SELECT FROM serverlookup WHERE domain = %s", (dest_name,))
+	    		if cur == 'missing':
+	    			cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (dest_site, dest_name))
+	    			conn.commit()
 	    else:
-	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s WHERE ipv4 = %s", (dest_name, rt_dest, dest_site, rt_dest))
+	    	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE ipv4 = %s", (dest_name, rt_dest, rt_dest))
 	    	conn.commit()
+	    	if cur == 'missing':
+	    		cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv4 = %s", (dest_site, rt_dest))
+	    		conn.commit()
 
 cur.close()
 conn.close()
