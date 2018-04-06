@@ -112,10 +112,10 @@ for i in range(0, src_data_size):
         		cur.execute("INSERT INTO serverlookup (domain, ipv6, sitename) VALUES (%s, %s, %s)", (src_name, rt_src, src_site))
         		conn.commit()
         	else:
-        		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename, %s)", (src_name, rt_src, src_site))
+        		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s)", (src_name, rt_src, src_site))
         		conn.commit()
         else:
-        	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename, %s)", (src_name, rt_src, src_site))
+        	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s)", (src_name, rt_src, src_site))
         	conn.commit()
     else:
         cur.execute("SELECT ipv4::text FROM serverlookup WHERE ipv4::text = (%s)", (rt_src,))
@@ -125,10 +125,10 @@ for i in range(0, src_data_size):
         		cur.execute("INSERT INTO serverlookup (domain, ipv4, sitename) VALUES (%s, %s, %s)", (src_name, rt_src, src_site))
         		conn.commit()
         	else:
-        		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename, %s)", (src_name, rt_src, src_site))
+        		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s)", (src_name, rt_src, src_site))
         		conn.commit()
         else:
-        	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename, %s)", (src_name, rt_src, src_site))
+        	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s)", (src_name, rt_src, src_site))
         	conn.commit()
     if ':' in rt_dest:
         cur.execute("SELECT ipv6::text FROM serverlookup WHERE ipv6::text = (%s)", (rt_dest,))
@@ -138,10 +138,10 @@ for i in range(0, src_data_size):
         		cur.execute("INSERT INTO serverlookup (domain, ipv6, sitename) VALUES (%s, %s, %s)", (dest_name, rt_dest, dest_site))
         		conn.commit()
         	else:
-        		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename, %s)", (dest_name, rt_dest, dest_site))
+        		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s)", (dest_name, rt_dest, dest_site))
         		conn.commit()
         else:
-        	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename, %s)", (dest_name, rt_dest, dest_site))
+        	cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s, sitename = %s)", (dest_name, rt_dest, dest_site))
         	conn.commit()
     else:
         cur.execute("SELECT ipv4::text FROM serverlookup WHERE ipv4::text = (%s)", (rt_dest,))
@@ -151,10 +151,10 @@ for i in range(0, src_data_size):
         		cur.execute("INSERT INTO serverlookup (domain, ipv4, sitename) VALUES (%s, %s, %s)", (dest_name, rt_dest, dest_site))
         		conn.commit()
         	else:
-        		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename, %s)", (dest_name, rt_dest, dest_site))
+        		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s)", (dest_name, rt_dest, dest_site))
         		conn.commit()
         else:
-        	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename, %s)", (dest_name, rt_dest, dest_site))
+        	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s)", (dest_name, rt_dest, dest_site))
         	conn.commit()
 
 cur.close()
