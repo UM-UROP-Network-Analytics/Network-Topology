@@ -125,7 +125,7 @@ for i in range(0, src_data_size):
         		cur.execute("INSERT INTO serverlookup (domain, ipv4, sitename) VALUES (%s, %s, %s)", (src_name, rt_src, src_site))
         		conn.commit()
         	else:
-        		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s WHERE domain = %s)", (src_name, rt_src, src_site, src_name)
+        		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s WHERE domain = %s)", (src_name, rt_src, src_site, src_name))
         		conn.commit()
         else:
         	cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s, sitename = %s WHERE ipv4::text = %s)", (src_name, rt_src, src_site, rt_src))
