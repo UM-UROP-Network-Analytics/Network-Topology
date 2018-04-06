@@ -93,8 +93,8 @@ src_data_size = len(src_results['aggregations']['grouped_by_hash']['buckets'])
 src_lists = []
 print(src_data_size)
 for i in range(0, src_data_size):
-print(i)
-    rt_src = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
+	print(i)
+	rt_src = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
     rt_dest = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
     src_name = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_host']
     dest_name = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_host']
