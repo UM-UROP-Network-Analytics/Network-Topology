@@ -44,7 +44,7 @@ end_date = '20180404T000000Z'
 my_src_query = {
     "size":1,
     "_source": {
-        "include": [ 'src', 'dest', 'src_host', 'dest_host', 'src_site', 'dest_site' ]
+        "include": [ 'src', 'dest', 'src_host', 'dest_host', 'src_site', 'dest_site', 'src_production', 'dest_production' ]
     },
     'query':{
         'bool':{
@@ -96,8 +96,14 @@ for i in range(0, src_data_size):
     rt_dest = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
     src_name = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_host']
     dest_name = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_host']
-    src_site = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_site']
-    dest_site = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_site']
+    if src_production == true:
+    	src_site = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_site']
+    else:
+    	src_site = 'n/a'
+    if dest_production == true:
+    	dest_site = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_site']
+    else:
+    	dest_site = 'n/a'
     cur.execute("SELECT ipv4 FROM serverlookup WHERE ipv4 = %s", (rt_src))
     if ':' in rt_src:
         cur.execute("SELECT ipv6 FROM serverlookup WHERE ipv6 = %s", (rt_src))
