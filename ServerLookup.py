@@ -88,10 +88,12 @@ my_src_query = {
 }
 
 src_results = es.search(body=my_src_query, index=my_index, request_timeout=12000)
-
+print('grabbed results')
 src_data_size = len(src_results['aggregations']['grouped_by_hash']['buckets'])
 src_lists = []
+print(src_data_size)
 for i in range(0, src_data_size):
+	print(i)
     rt_src = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
     rt_dest = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
     src_name = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_host']
@@ -159,3 +161,4 @@ for i in range(0, src_data_size):
 
 cur.close()
 conn.close()
+print('finished')
