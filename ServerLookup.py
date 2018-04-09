@@ -112,7 +112,7 @@ for i in range(0, src_data_size):
 	    		conn.commit()
 	    	else:
 	    		cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (src_name,))
-	    		if str(cur).upper().isupper():
+	    		if (!str(cur).upper().isupper()):
 	    			cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE domain = %s", (src_name, rt_src, src_name))
 	    			conn.commit()
 	    		cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (src_name,))
@@ -121,7 +121,7 @@ for i in range(0, src_data_size):
 	    			conn.commit()
 	    else:
 	    	cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (src_name,))
-	    	if str(cur).upper().isupper():
+	    	if (!str(cur).upper().isupper()):
 	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE ipv6 = %s", (src_name, rt_src, rt_src))
 	    		conn.commit()
 	    	cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (src_name,))
@@ -137,7 +137,7 @@ for i in range(0, src_data_size):
 	    		conn.commit()
 	    	else:
 	    		cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (src_name,))
-	    		if str(cur).upper().isupper():
+	    		if (!str(cur).upper().isupper()):
 	    			cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE domain = %s", (src_name, rt_src, src_name))
 	    			conn.commit()
 	    		cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (src_name,))
@@ -146,7 +146,7 @@ for i in range(0, src_data_size):
 	    			conn.commit()
 	    else:
 	    	cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (src_name,))
-	    	if str(cur).upper().isupper():
+	    	if (!str(cur).upper().isupper()):
 	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE ipv4 = %s", (src_name, rt_src, rt_src))
 	    		conn.commit()
 	    	cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (src_name,))
@@ -162,7 +162,7 @@ for i in range(0, src_data_size):
 	    		conn.commit()
 	    	else:
 	    		cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (dest_name,))
-	    		if str(cur).upper().isupper():
+	    		if (!str(cur).upper().isupper()):
 	    			cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE domain = %s", (dest_name, rt_dest, dest_name))
 	    			conn.commit()
 	    		cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (dest_name,))
@@ -171,7 +171,7 @@ for i in range(0, src_data_size):
 	    			conn.commit()
 	    else:
 	    	cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (dest_name,))
-	    	if str(cur).upper().isupper():
+	    	if (!str(cur).upper().isupper()):
 	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE ipv6 = %s", (dest_name, rt_dest, rt_dest))
 	    		conn.commit()
 	    	cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (dest_name,))
@@ -187,7 +187,7 @@ for i in range(0, src_data_size):
 	    		conn.commit()
 	    	else:
 	    		cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (dest_name,))
-	    		if str(cur).upper().isupper():
+	    		if (!str(cur).upper().isupper()):
 	    			cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE domain = %s", (dest_name, rt_dest, dest_name))
 	    			conn.commit()
 	    		cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (dest_name,))
@@ -196,7 +196,7 @@ for i in range(0, src_data_size):
 	    			conn.commit()
 	    else:
 	    	cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (dest_name,))
-	    	if str(cur).upper().isupper():
+	    	if (!str(cur).upper().isupper()):
 	    		cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE ipv4 = %s", (dest_name, rt_dest, rt_dest))
 	    		conn.commit()
 	    	cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (dest_name,))
