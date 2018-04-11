@@ -1,12 +1,13 @@
 #!/usr/bin/env python3
-from elasticsearch import Elasticsearch
+#from elasticsearch import Elasticsearch
 #from elasticsearch.helpers import scan
+import elasticsearch
 from datetime import datetime, timedelta
 import time
 import numpy as np
 import psycopg2
 
-es = Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
+es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = ["ps_trace-2018*"]
 db_in = raw_input("Enter database name ")
 user_in = raw_input("Enter username ")
