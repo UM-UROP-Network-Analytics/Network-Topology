@@ -40,7 +40,7 @@ dS='pic'
 destSiteOWDServer = "193.109.172.188"
 destSiteThroughputServer = "193.109.172.187"
 
-now = datetime.utcnow()
+now = datetime.datetime.utcnow()
 curr_mon = now.month
 3monago = curr_mon
 if curr_mon >= 4:
