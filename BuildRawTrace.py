@@ -173,7 +173,7 @@ for i in range(0, data_size):
   rt_dest = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
   rt_hops = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['hops']
   rt_num_hops = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['n_hops']
-  rt_ts = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['fields']['timestamp']
+  rt_ts = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_fields']['timestamp']
   cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, rt_ts))
   conn.commit()
 cur.close()
