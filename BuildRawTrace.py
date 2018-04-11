@@ -125,7 +125,7 @@ for x in range (0,len(src_lists)):
         },
         "fields": {
             "include": ['timestamp']
-        }
+        },
         'query':{
             'bool':{
                 'must':[
