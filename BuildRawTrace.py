@@ -41,8 +41,8 @@ destSiteOWDServer = "193.109.172.188"
 destSiteThroughputServer = "193.109.172.187"
 
 now = datetime.utcnow()
-3monago = -1
 curr_mon = now.month
+3monago = curr_mon
 if curr_mon >= 4:
   3monago = curr_mon - 3
 else:
