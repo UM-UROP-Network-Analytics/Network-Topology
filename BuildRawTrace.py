@@ -42,7 +42,7 @@ destSiteThroughputServer = "193.109.172.187"
 
 now = datetime.utcnow()
 curr_mon = now.month
-curr_day = now.strftime("%D")
+curr_day = now.strftime("%d")
 curr_year = now.strftime("%Y")
 curr_hr = now.strftime("%H")
 curr_min = now.strftime("%M")
