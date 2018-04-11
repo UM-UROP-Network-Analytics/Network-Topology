@@ -57,7 +57,7 @@ else:
     curr_mon = 11
   if curr_mon is 1:
     curr_mon = 10
-start_date = curr_year + str(3monago) + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
+start_date = curr_year + str(curr_mon) + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
 #start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
 my_src_query = {
     "size":1,
