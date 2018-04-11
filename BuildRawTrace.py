@@ -37,7 +37,7 @@ else:
 start_date = curr_year + str(curr_mon) + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
 #start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
 my_query = {
-    "size":100,
+    "size":1000,
     "_source": {
         "include": [ 'src','dest','hops', 'n_hops', 'timestamp']
     },
