@@ -40,24 +40,23 @@ dS='pic'
 destSiteOWDServer = "193.109.172.188"
 destSiteThroughputServer = "193.109.172.187"
 
-now = datetime.datetime.utcnow()
+now = datetime.utcnow()
 curr_mon = now.month
-3monago = curr_mon
-if curr_mon >= 4:
-  3monago = curr_mon - 3
-else:
-  if curr_mon is 3:
-    3monago = 12
-  if curr_mon is 2:
-    3monago = 11
-  if curr_mon is 1:
-    3monago = 10
 curr_day = str(now.day)
 curr_year = str(now.year)
 curr_hr = str(now.hour)
 curr_min = str(now.minute)
 curr_sec = str(now.second)
 end_date = curr_year + str(curr_mon) + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
+if curr_mon >= 4:
+  curr_mon -= 3
+else:
+  if curr_mon is 3:
+    curr_mon = 12
+  if curr_mon is 2:
+    curr_mon = 11
+  if curr_mon is 1:
+    curr_mon = 10
 start_date = curr_year + str(3monago) + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
 #start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
 my_src_query = {
