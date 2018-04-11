@@ -108,7 +108,7 @@ my_src_query = {
 }
 
 src_results = es.search(body=my_src_query, index=my_index, request_timeout=12000)
-    
+print("Gathered sources")
 src_dict = {}
 src_data_size = len(src_results['aggregations']['grouped_by_hash']['buckets'])
 src_lists = []
@@ -117,7 +117,7 @@ for i in range(0, src_data_size):
     if rt_src not in src_dict.keys():
         src_lists.append(rt_src)
         src_dict[rt_src] = 1
-
+print("Sorted sources")
 for x in range (0,len(src_lists)):
     my_query = {
         "size":1,
@@ -168,14 +168,14 @@ for x in range (0,len(src_lists)):
     }
     results = es.search(body=my_query, index=my_index, request_timeout=100000)
     data_size = len(results['aggregations']['grouped_by_hash']['buckets'])
-
+print("Gathered data")
 for i in range(0, data_size):
   rt_src = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
   rt_dest = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
   rt_hops = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['hops']
   rt_num_hops = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['n_hops']
   rt_ts = results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['timestamp']
-  rt_ts = rt_ts[:-3]
+  rt_ts = rt_ts / 1000
   format_ts = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(rt_ts))
   cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
   conn.commit()
