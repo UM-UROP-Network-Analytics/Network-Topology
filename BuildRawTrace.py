@@ -107,7 +107,6 @@ my_src_query = {
 
 src_results = es.search(body=my_src_query, index=my_index, request_timeout=12000)
     
-print('grabbed src data')
 src_dict = {}
 src_data_size = len(src_results['aggregations']['grouped_by_hash']['buckets'])
 src_lists = []
@@ -153,7 +152,7 @@ for x in range (0,len(src_lists)):
         },
         "aggs": {
             "grouped_by_hash": {
-              "terms": {  "field": "hash", "size":40000 }, #
+              "terms": {  "field": "hash", "size":45000 }, #
               "aggs": {
                   "top_hash_hits": {
                       "top_hits": {
