@@ -42,14 +42,15 @@ destSiteThroughputServer = "193.109.172.187"
 
 now = datetime.utcnow()
 curr_mon = now.month
-curr_day = str(now.day)
-curr_year = str(now.year)
-curr_hr = str(now.hour)
-curr_min = str(now.minute)
-curr_sec = str(now.second)
-end_date = curr_year + str(curr_mon) + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
+curr_day = now.strftime("%D")
+curr_year = now.strftime("%Y")
+curr_hr = now.strftime("%H")
+curr_min = now.strftime("%M")
+curr_sec = now.strftime("%S")
+end_date = curr_year + now.strftime("%m") + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
 if curr_mon >= 4:
   curr_mon -= 3
+  curr_mon = '0' + str(curr_mon)
 else:
   if curr_mon is 3:
     curr_mon = 12
