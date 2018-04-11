@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from elasticsearch import Elasticsearch
-from elasticsearch.helpers import scan
+#from elasticsearch.helpers import scan
 from datetime import datetime, timedelta
 import time
 import numpy as np
