@@ -34,8 +34,11 @@ else:
     curr_mon = 11
   if curr_mon is 1:
     curr_mon = 10
-start_date = curr_year + str(curr_mon) + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
-#start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
+cur.execute("SELECT * FROM rawtracedata limit 1")
+if cur.fetchone() is None:
+  start_date = '20180101T000000Z'
+else:
+  start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
 my_query = {
     "size":1,
     "_source": {
@@ -55,6 +58,7 @@ for item in results:
   rt_src = item['_source']['src']
   rt_dest = item['_source']['dest']
   rt_hops = item['_source']['hops']
+  rt_hops = rt_hops[1:-1]
   rt_num_hops = item['_source']['n_hops']
   rt_ts = item['_source']['timestamp']
   rt_ts = rt_ts / 1000
