@@ -58,7 +58,6 @@ for item in results:
   rt_src = item['_source']['src']
   rt_dest = item['_source']['dest']
   rt_hops = item['_source']['hops']
-  rt_hops = rt_hops[1:-1]
   rt_num_hops = item['_source']['n_hops']
   rt_ts = item['_source']['timestamp']
   rt_ts = rt_ts / 1000
