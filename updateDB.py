@@ -65,7 +65,7 @@ def updateRaw( item ):
     except IntegrityError:
         #error_message = 'Caught an attempt to violate key of SOURCE: ' + str(rt_src) + ' DEST: ' + str(rt_dest) + ' TIMESTAMP :' + str(format_ts)
         #print(error_message)
-        cur.rollback()
+        conn.rollback()
         pass
 
 #updates the server lookup table
@@ -200,12 +200,12 @@ def updateSummary( item ):
                 cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
                 conn.commit()
             except IntegrityError:
-                cur.rollback()
+                conn.rollback()
                 fullcount = cur.execute("SELECT count FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
                 cur.execute("UPDATE routesummary SET count = %s WHERE src = %s AND dest = %s", (fullcount+1, rt_src, rt_dest))
                 conn.commit()
         except IntegrityError:
-            cur.rollback()
+            conn.rollback()
             current_count = cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND rt_hops = %s", (rt_src, rt_dest, rt_hops))
             cur.execute("UPDATE traceroute SET cnt = %s WHERE src = %s AND dest = %s AND rt_hops = %s", (current_count+1, rt_src, rt_dest, rt_hops))
             conn.commit()
@@ -213,7 +213,7 @@ def updateSummary( item ):
                 cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
                 conn.commit()
             except IntegrityError:
-                cur.rollback()
+                conn.rollback()
                 fullcount = cur.execute("SELECT count FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
                 cur.execute("UPDATE routesummary SET count = %s WHERE src = %s AND dest = %s", (fullcount+1, rt_src, rt_dest))
                 conn.commit()
@@ -222,7 +222,7 @@ def updateSummary( item ):
             cur.execute("INSERT INTO routesummary (src, dest, pcount) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
             conn.commit()
         except IntegrityError:
-            cur.rollback()
+            conn.rollback()
             partialcount = cur.execute("SELECT pcount FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
             cur.execute("UPDATE routesummary SET pcount = %s WHERE src = %s AND dest = %s", (partialcount+1, rt_src, rt_dest))
             conn.commit()
