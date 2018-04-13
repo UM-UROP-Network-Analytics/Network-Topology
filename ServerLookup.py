@@ -16,14 +16,18 @@ cur = conn.cursor()
 my_query = {}
 
 now = datetime.utcnow()
-curr_mon = now.month("%m")
-curr_day = now.day
+curr_mon = now.month
+curr_day = now.strftime("%d")
 curr_year = now.strftime("%Y")
 curr_hr = now.strftime("%H")
 curr_min = now.strftime("%M")
 curr_sec = now.strftime("%S")
-end_date = curr_year + curr_mon + now.strftime("%d") + 'T' + curr_hr + curr_min + curr_sec + 'Z'
-start_date = curr_year + curr_mon + str(curr_day-1) + 'T' + curr_hr + curr_min + curr_sec + 'Z'
+end_date = curr_year + now.strftime("%m") + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
+cur.execute("SELECT * FROM rawtracedata limit 1")
+if cur.fetchone() is None:
+  start_date = '20180101T000000Z'
+else:
+  start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
 my_src_query = {
     "size":1,
     "_source": {

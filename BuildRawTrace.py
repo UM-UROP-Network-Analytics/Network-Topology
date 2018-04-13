@@ -54,7 +54,9 @@ for item in results:
   try:
     cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
     conn.commit()
-  except:
+  except IntegrityError:
+    error_message = 'Caught an attempt to violate key of SOURCE: ' + str(rt_src) + ' DEST: ' + str(rt_dest) + ' TIMESTAMP :' + str(format_ts)
+    print(error_message)
     pass
 cur.close()
 conn.close()
