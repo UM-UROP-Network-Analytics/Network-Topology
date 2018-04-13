@@ -5,6 +5,7 @@ from datetime import datetime, timedelta
 import time
 import numpy as np
 import psycopg2
+from psycopg2 import IntegrityError
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
