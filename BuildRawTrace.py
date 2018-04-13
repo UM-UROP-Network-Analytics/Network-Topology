@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-#from elasticsearch import Elasticsearch
 import elasticsearch
 from elasticsearch import helpers
 from datetime import datetime, timedelta
@@ -24,16 +23,6 @@ curr_hr = now.strftime("%H")
 curr_min = now.strftime("%M")
 curr_sec = now.strftime("%S")
 end_date = curr_year + now.strftime("%m") + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
-if curr_mon >= 4:
-  curr_mon -= 3
-  curr_mon = '0' + str(curr_mon)
-else:
-  if curr_mon is 3:
-    curr_mon = 12
-  if curr_mon is 2:
-    curr_mon = 11
-  if curr_mon is 1:
-    curr_mon = 10
 cur.execute("SELECT * FROM rawtracedata limit 1")
 if cur.fetchone() is None:
   start_date = '20180101T000000Z'
@@ -62,7 +51,10 @@ for item in results:
   rt_ts = item['_source']['timestamp']
   rt_ts = rt_ts / 1000
   format_ts = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(rt_ts))
-  cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
-  conn.commit()
+  try:
+    cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
+    conn.commit()
+  except:
+    pass
 cur.close()
 conn.close()

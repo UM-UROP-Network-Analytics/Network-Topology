@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
-from elasticsearch import Elasticsearch
-from elasticsearch.helpers import scan
+import elasticsearch
+from elasticsearch import helpers
 from datetime import datetime, timedelta
+import time
 import numpy as np
 import psycopg2
 
@@ -14,33 +15,15 @@ conn = psycopg2.connect(host="t3pers13.physics.lsa.umich.edu", database=db_in, u
 cur = conn.cursor()
 my_query = {}
 
-# CHANGE SO IT RETREIVES ONLY UNIQUE hashes.
-
-# sS='UC'
-# srcSiteOWDServer = "192.170.227.160"
-# srcSiteThroughputServer = "192.170.227.162"
-
-sS='CERN-PROD'
-srcSiteOWDServer = "128.142.223.247"
-srcSiteThroughputServer = "128.142.223.246"
-
-# dS='IU'
-# destSiteOWDServer = "149.165.225.223"
-# destSiteThroughputServer = "149.165.225.224"
-
-# dS='UIUC'
-# destSiteOWDServer = "72.36.96.4"
-# destSiteThroughputServer = "72.36.96.9"
-
-# dS='ICCN'
-# destSiteOWDServer = "72.36.96.4"
-# destSiteThroughputServer = "72.36.126.132"
-
-dS='pic'
-destSiteOWDServer = "193.109.172.188"
-destSiteThroughputServer = "193.109.172.187"
-start_date = '20180104T000000Z'
-end_date = '20180404T000000Z'
+now = datetime.utcnow()
+curr_mon = now.month("%m")
+curr_day = now.day
+curr_year = now.strftime("%Y")
+curr_hr = now.strftime("%H")
+curr_min = now.strftime("%M")
+curr_sec = now.strftime("%S")
+end_date = curr_year + curr_mon + now.strftime("%d") + 'T' + curr_hr + curr_min + curr_sec + 'Z'
+start_date = curr_year + curr_mon + str(curr_day-1) + 'T' + curr_hr + curr_min + curr_sec + 'Z'
 my_src_query = {
     "size":1,
     "_source": {
@@ -50,57 +33,24 @@ my_src_query = {
         'bool':{
             'must':[
                 {'range': {'timestamp': {'gte': start_date, 'lt': end_date}}},
-                #{'term': {'_type': 'traceroute'}},
-#                         {'bool':
-#                             {'should':[
-#                                 {'term': {'src': srcSiteOWDServer}},
-#                                 {'term': {'src': srcSiteThroughputServer}},
-#                                 {'term': {'src': destSiteOWDServer}},
-#                                 {'term': {'src': destSiteThroughputServer}}
-#                             ]}
-#                         }
-#                         ,
-#                         {'bool':
-#                             {'should':[
-#                                 {'term': {'dest': destSiteOWDServer}},
-#                                 {'term': {'dest': destSiteThroughputServer}},
-#                                 {'term': {'dest': srcSiteOWDServer}},
-#                                 {'term': {'dest': srcSiteThroughputServer}}
-#                             ]}
-#                         }
             ]
 
         }
     },
-    "aggs": {
-        "grouped_by_hash": {
-          "terms": {  "field": "hash", "size":10000 }, #
-          "aggs": {
-              "top_hash_hits": {
-                  "top_hits": {
-                      "sort": [ { "_score": { "order": "desc" } } ],
-                      "size": 1
-                  }
-              }
-          }
-       }
-    }
 }
 
-src_results = es.search(body=my_src_query, index=my_index, request_timeout=12000)
-src_data_size = len(src_results['aggregations']['grouped_by_hash']['buckets'])
-src_lists = []
-for i in range(0, src_data_size):
-	rt_src = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src']
-	rt_dest = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest']
-	src_name = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_host']
-	dest_name = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_host']
-	if 'src_site' in src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source'].keys():
-		src_site = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['src_site']
+src_results = elasticsearch.helpers.scan(es, query=my_src_query, index=my_index, request_timeout=12000, size=1000)
+for item in src_results:
+	rt_src = item['_source']['src']
+	rt_dest = item['_source']['dest']
+	src_name = item['_source']['src_host']
+	dest_name = item['_source']['dest_host']
+	if 'src_site' in item['_source'].keys():
+		src_site = item['_source']['src_site']
 	else:
 		src_site = 'missing'
-	if 'dest_site' in src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source'].keys():
-		dest_site = src_results['aggregations']['grouped_by_hash']['buckets'][i]['top_hash_hits']['hits']['hits'][0]['_source']['dest_site']
+	if 'dest_site' in item['_source'].keys():
+		dest_site = item['_source']['dest_site']
 	else:
 		dest_site = 'missing'
 	if ':' in rt_src:
@@ -153,7 +103,7 @@ for i in range(0, src_data_size):
 	    	if cur == 'missing':
 	    		cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv4 = %s", (src_site, rt_src))
 	    		conn.commit()
-	if ':' in rt_dest:
+	if ':' in rt_dest:		
 	    cur.execute("SELECT ipv6 FROM serverlookup WHERE ipv6 = (%s)", (rt_dest,))
 	    if cur.fetchone() is None:
 	    	cur.execute("SELECT ipv4 FROM serverlookup WHERE domain = (%s)", (dest_name,))
