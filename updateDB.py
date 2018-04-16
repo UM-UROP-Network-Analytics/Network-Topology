@@ -234,10 +234,10 @@ def updateSummary( item ):
                     cur.execute("UPDATE routesummary SET pcount = %s WHERE src = %s AND dest = %s", (partialcount+1, rt_src, rt_dest))
                     conn.commit()
         else:
-            print 'nhops count of ' + rt_num_hops + ' found at src = ' + rt_src + ' and dest = ' + rt_dest + ' with hops list'
+            print 'nhops count of ' + str(rt_num_hops) + ' found at src = ' + str(rt_src) + ' and dest = ' + str(rt_dest) + ' with hops list'
             print my_hops   
     else:
-        print 'NoneType found at src = ' + rt_src + ' and dest = ' + rt_dest
+        print 'NoneType found at src = ' + str(rt_src) + ' and dest = ' + str(rt_dest)
 
 #loops through everything in results and then calls all update functions on each item
 for item in results:
