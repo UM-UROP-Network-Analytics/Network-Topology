@@ -187,7 +187,7 @@ def updateSummary( item ):
     rt_dest = item['_source']['dest']
     rt_hops = item['_source']['hops']
     rt_num_hops = item['_source']['n_hops']
-    if rt_hops:
+    if rt_hops.size() > 0:
         my_hops = '{' + ','.join(rt_hops) + '}'
         if rt_hops[rt_num_hops-1] == rt_dest:
             try:
@@ -231,7 +231,7 @@ def updateSummary( item ):
                 conn.commit()
     else:
         print 'NoneType found at src = ' + rt_src + ' and dest = ' + rt_dest
-        
+
 #loops through everything in results and then calls all update functions on each item
 for item in results:
     updateRaw(item)
