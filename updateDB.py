@@ -204,8 +204,8 @@ def updateSummary( item ):
                 conn.commit()
         except IntegrityError:
             conn.rollback()
-            current_count = cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND hops = %s", (rt_src, rt_dest, rt_hops))
-            cur.execute("UPDATE traceroute SET cnt = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, rt_src, rt_dest, rt_hops))
+            current_count = cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND hops = %s", (rt_src, rt_dest, ARRAY[rt_hops]))
+            cur.execute("UPDATE traceroute SET cnt = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, rt_src, rt_dest, ARRAY[rt_hops]))
             conn.commit()
             try:
                 cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
