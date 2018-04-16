@@ -207,7 +207,6 @@ def updateSummary( item ):
             conn.rollback()
             cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND hops = %s", (rt_src, rt_dest, my_hops))
             current_count = cur.fetchone()[0]
-            print(current_count)
             cur.execute("UPDATE traceroute SET cnt = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, rt_src, rt_dest, my_hops))
             conn.commit()
             try:
@@ -215,8 +214,9 @@ def updateSummary( item ):
                 conn.commit()
             except IntegrityError:
                 conn.rollback()
-                fullcount = cur.execute("SELECT count FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
-                cur.execute("UPDATE routesummary SET count = %s WHERE src = %s AND dest = %s", (int(fullcount)+1, rt_src, rt_dest))
+                cur.execute("SELECT count FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
+                fullcount = cur.fetchone()[0]
+                cur.execute("UPDATE routesummary SET count = %s WHERE src = %s AND dest = %s", (fullcount+1, rt_src, rt_dest))
                 conn.commit()
     else:
         try:
@@ -224,8 +224,9 @@ def updateSummary( item ):
             conn.commit()
         except IntegrityError:
             conn.rollback()
-            partialcount = cur.execute("SELECT pcount FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
-            cur.execute("UPDATE routesummary SET pcount = %s WHERE src = %s AND dest = %s", (int(partialcount)+1, rt_src, rt_dest))
+            cur.execute("SELECT pcount FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
+            partialcount = cur.fetchone()[0]
+            cur.execute("UPDATE routesummary SET pcount = %s WHERE src = %s AND dest = %s", (partialcount+1, rt_src, rt_dest))
             conn.commit()
 
 #loops through everything in results and then calls all update functions on each item
