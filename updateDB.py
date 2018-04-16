@@ -206,6 +206,7 @@ def updateSummary( item ):
         except IntegrityError:
             conn.rollback()
             current_count = cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND hops = %s", (rt_src, rt_dest, my_hops))
+            print(current_count)
             cur.execute("UPDATE traceroute SET cnt = %s WHERE src = %s AND dest = %s AND hops = %s", (int(current_count)+1, rt_src, rt_dest, my_hops))
             conn.commit()
             try:
