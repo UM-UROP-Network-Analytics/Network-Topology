@@ -231,6 +231,8 @@ def updateSummary( item ):
                     conn.rollback()
                     cur.execute("SELECT pcount FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
                     partialcount = cur.fetchone()[0]
+                    if partialcount is None:
+                        print 'partialcount none at src ' + str(rt_src) + ' dest ' + str(rt_dest)
                     cur.execute("UPDATE routesummary SET pcount = %s WHERE src = %s AND dest = %s", (partialcount+1, rt_src, rt_dest))
                     conn.commit()
         else:
