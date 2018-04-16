@@ -10,7 +10,7 @@ from psycopg2 import IntegrityError
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = ["ps_trace-2018*"]
-onn = psycopg2.connect(host="t3pers13.physics.lsa.umich.edu", database="zerses_test", user="postgres")
+conn = psycopg2.connect(host="t3pers13.physics.lsa.umich.edu", database="zerses_test", user="postgres")
 print('Connected to the database')
 cur = conn.cursor()
 my_query = {}
