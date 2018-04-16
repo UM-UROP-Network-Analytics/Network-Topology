@@ -191,7 +191,7 @@ def updateSummary( item ):
         if any(x is None for x in rt_hops):
             rt_hops = ['None' if v is None else v for v in rt_hops]
         my_hops = '{' + ','.join(rt_hops) + '}'
-        if rt_num_hops > 1:
+        if rt_num_hops >= 1:
             if rt_hops[rt_num_hops-1] == rt_dest:
                 try:
                     cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops, rtnum) VALUES (%s, %s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops, 1))
