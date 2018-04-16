@@ -203,7 +203,8 @@ def updateSummary( item ):
                     conn.commit()
                 except IntegrityError:
                     conn.rollback()
-                    fullcount = cur.execute("SELECT count FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
+                    cur.execute("SELECT count FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
+                    fullcount = cur.fetchone()[0]
                     cur.execute("UPDATE routesummary SET count = %s WHERE src = %s AND dest = %s", (int(fullcount)+1, rt_src, rt_dest))
                     conn.commit()
             except IntegrityError:
