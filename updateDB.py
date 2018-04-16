@@ -6,14 +6,13 @@ import time
 import numpy as np
 import psycopg2
 from psycopg2 import IntegrityError
+from config import config
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = ["ps_trace-2018*"]
-db_in = raw_input("Enter database name ")
-user_in = raw_input("Enter username ")
-pass_in = raw_input("Enter user password ")
-conn = psycopg2.connect(host="t3pers13.physics.lsa.umich.edu", database=db_in, user=user_in, password=pass_in)
+params = config()
+conn = psycopg2.connect(**params)
 cur = conn.cursor()
 my_query = {}
 
