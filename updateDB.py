@@ -13,6 +13,7 @@ es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = ["ps_trace-2018*"]
 params = config()
 conn = psycopg2.connect(**params)
+print('Connected to the database')
 cur = conn.cursor()
 my_query = {}
 
