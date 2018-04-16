@@ -189,10 +189,7 @@ def updateSummary( item ):
     rt_num_hops = item['_source']['n_hops']
     if rt_hops is not None:
         if any(x is None for x in rt_hops):
-            print 'src: ' + rt_src
-            print 'dest: ' + rt_dest
-            print 'hops: '
-            print rt_hops
+            'None' if v is None else v for v in rt_hops
         my_hops = '{' + ','.join(rt_hops) + '}'
         if rt_hops[rt_num_hops-1] == rt_dest:
             try:
