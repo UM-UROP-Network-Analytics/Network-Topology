@@ -8,7 +8,7 @@ import psycopg2
 from psycopg2 import IntegrityError
 from config import config
 
-conn = psycopg2.connect(host="psdb.aglt2.org", database="psdb_urop", user="postgres")
+conn = psycopg2.connect(host="psdb.aglt2.org", database="psdb_urop", user="urop", password="uropdbuserpass")
 print('Connected to the database')
 cur = conn.cursor()
 conn.close()
