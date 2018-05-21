@@ -60,7 +60,7 @@ def updateRaw( item ):
     rt_ts = rt_ts / 1000
     print('gmtime')
     print(time.gmtime(rt_ts))
-    format_ts = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(rt_ts))
+    format_ts = time.strftime("%Y-%m-%d %H:%M:%S-0000", time.gmtime(rt_ts))
     print('format')
     print(format_ts)
     try:
