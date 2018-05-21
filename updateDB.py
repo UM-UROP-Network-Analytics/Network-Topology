@@ -58,7 +58,11 @@ def updateRaw( item ):
     rt_num_hops = item['_source']['n_hops']
     rt_ts = item['_source']['timestamp']
     rt_ts = rt_ts / 1000
+    print('gmtime')
+    print(time.gmtime(rt_ts))
     format_ts = time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime(rt_ts))
+    print('format')
+    print(format_ts)
     try:
         cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
         conn.commit()
