@@ -198,7 +198,11 @@ def updateSummary( item ):
         if rt_num_hops >= 1:
             if rt_hops[rt_num_hops-1] == rt_dest:
                 try:
-                    last_rt = cur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
+                    cur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
+                    if cur.fetchone() is None():
+                        last_rt = 0
+                    else:
+                        last_rt = cur.fetchone()
                     cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops, rtnum) VALUES (%s, %s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops, last_rt+1))
                     conn.commit()
                     correct_num = cur.execute("SELECT count(*) FROM traceroute WHERE src = %s AND dest = %s", (rt_src, rt_dest))
