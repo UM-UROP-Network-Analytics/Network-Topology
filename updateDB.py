@@ -210,10 +210,10 @@ def updateSummary( item ):
                         cur.execute("SELECT count FROM routesummary WHERE src = %s AND dest = %s", (rt_src, rt_dest))
                         fullcount = cur.fetchone()[0]
                         if fullcount is None:
-                            cur.execute("UPDATE routesummary SET count = %s, complete = %s WHERE src = %s AND dest = %s", (1, true, rt_src, rt_dest))
+                            cur.execute("UPDATE routesummary SET count = %s WHERE src = %s AND dest = %s", (1, rt_src, rt_dest))
                             conn.commit()
                         else:
-                            cur.execute("UPDATE routesummary SET count = %s, complete = %s WHERE src = %s AND dest = %s", (fullcount+1, true, rt_src, rt_dest))
+                            cur.execute("UPDATE routesummary SET count = %s WHERE src = %s AND dest = %s", (fullcount+1, rt_src, rt_dest))
                             conn.commit()
                 except IntegrityError:
                     conn.rollback()
