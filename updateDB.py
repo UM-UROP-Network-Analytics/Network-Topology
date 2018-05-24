@@ -202,10 +202,10 @@ def updateSummary( item ):
                         last_rt = 0
                     print('After ')
                     print(last_rt)
-                    cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops, rtnum) VALUES (%s, %s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops, last_rt+1))
+                    cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops))
                     conn.commit()
-                    correct_num = cur.execute("SELECT count(*) FROM traceroute WHERE src = %s AND dest = %s", (rt_src, rt_dest))
-                    cur.execute("UPDATE traceroute SET rtnum = %s WHERE src = %s AND dest = %s AND hops = %s", (correct_num, rt_src, rt_dest, my_hops))
+                    #correct_num = cur.execute("SELECT count(*) FROM traceroute WHERE src = %s AND dest = %s", (rt_src, rt_dest))
+                    cur.execute("UPDATE traceroute SET rtnum = %s WHERE src = %s AND dest = %s AND hops = %s", (last_rt+1, rt_src, rt_dest, my_hops))
                     conn.commit()
                     try:
                         cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
