@@ -58,11 +58,7 @@ def updateRaw( item ):
     rt_num_hops = item['_source']['n_hops']
     rt_ts = item['_source']['timestamp']
     rt_ts = rt_ts / 1000
-    print('gmtime')
-    print(time.gmtime(rt_ts))
     format_ts = time.strftime("%Y-%m-%d %H:%M:%S-0000", time.gmtime(rt_ts))
-    print('format')
-    print(format_ts)
     try:
         cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
         conn.commit()
@@ -198,11 +194,9 @@ def updateSummary( item ):
         if rt_num_hops >= 1:
             if rt_hops[rt_num_hops-1] == rt_dest:
                 try:
-                    cur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
-                    if cur.fetchone() is None:
+                    last_rt = cur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
+                    if last_rt is None:
                         last_rt = 0
-                    else:
-                        last_rt = cur.fetchone()
                     cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops, rtnum) VALUES (%s, %s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops, last_rt+1))
                     conn.commit()
                     correct_num = cur.execute("SELECT count(*) FROM traceroute WHERE src = %s AND dest = %s", (rt_src, rt_dest))
