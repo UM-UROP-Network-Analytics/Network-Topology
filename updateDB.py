@@ -199,7 +199,7 @@ def updateSummary( item ):
             if rt_hops[rt_num_hops-1] == rt_dest:
                 try:
                     cur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
-                    if cur.fetchone() is None():
+                    if cur.fetchone() is None:
                         last_rt = 0
                     else:
                         last_rt = cur.fetchone()
