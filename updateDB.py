@@ -220,7 +220,7 @@ def updateSummary( item ):
                     conn.rollback()
                     cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND hops = %s", (rt_src, rt_dest, my_hops))
                     current_count = cur.fetchone()[0]
-                     ur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
+                    cur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
                     last_rt = cur.fetchone()[0]
                     cur.execute("UPDATE traceroute SET cnt = %s, rtnum = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, last_rt+1, rt_src, rt_dest, my_hops))
                     conn.commit()
