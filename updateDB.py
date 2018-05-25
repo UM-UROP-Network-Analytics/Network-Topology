@@ -196,16 +196,12 @@ def updateSummary( item ):
                 try:
                     cur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
                     last_rt = cur.fetchone()[0]
-                    print('Before ')
-                    print(last_rt)
                     if last_rt is None:
                         last_rt = 0
-                    print('After ')
-                    print(last_rt)
-                    cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops))
+                    cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops, rtnum) VALUES (%s, %s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops, 1))
                     conn.commit()
                     #correct_num = cur.execute("SELECT count(*) FROM traceroute WHERE src = %s AND dest = %s", (rt_src, rt_dest))
-                    cur.execute("UPDATE traceroute SET rtnum = %s WHERE src = %s AND dest = %s AND hops = %s", (last_rt+1, rt_src, rt_dest, my_hops))
+                    #cur.execute("UPDATE traceroute SET rtnum = %s WHERE src = %s AND dest = %s AND hops = %s", (last_rt+1, rt_src, rt_dest, my_hops))
                     conn.commit()
                     try:
                         cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
@@ -224,7 +220,9 @@ def updateSummary( item ):
                     conn.rollback()
                     cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND hops = %s", (rt_src, rt_dest, my_hops))
                     current_count = cur.fetchone()[0]
-                    cur.execute("UPDATE traceroute SET cnt = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, rt_src, rt_dest, my_hops))
+                     ur.execute("SELECT max(rtnum) FROM traceroute WHERE src = %s AND dest =%s", (rt_src, rt_dest))
+                    last_rt = cur.fetchone()[0]
+                    cur.execute("UPDATE traceroute SET cnt = %s, rtnum = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, last_rt+1, rt_src, rt_dest, my_hops))
                     conn.commit()
                     try:
                         cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
