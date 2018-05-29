@@ -28,12 +28,12 @@ curr_sec = now.strftime("%S")
 end_date = curr_year + now.strftime("%m") + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
 cur.execute("SELECT * FROM rawtracedata limit 1")
 if cur.fetchone() is None:
-    print('Using default')
-    print(start_date)
+  print('Using default')
+  print(start_date)
   start_date = '20180101T000000Z'
 else:
-    print('New timestamp of')
-    print (start_date)
+  print('New timestamp of')
+  print (start_date)
   start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
 
 #build and run the query
