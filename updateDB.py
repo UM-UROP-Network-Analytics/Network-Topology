@@ -63,6 +63,9 @@ def updateRaw( item ):
         cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
         conn.commit()
     except IntegrityError:
+        real = cur.query
+        print('Rollback for ')
+        print(real)
         conn.rollback()
         pass
 
