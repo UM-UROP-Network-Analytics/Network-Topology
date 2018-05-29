@@ -33,7 +33,7 @@ if cur.fetchone() is None:
   print(start_date)
 else:
   print('New timestamp of')
-  start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
+  start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD"T"HHMISS"Z"') FROM rawtracedata")
   print (start_date)
 
 #build and run the query
@@ -261,12 +261,12 @@ def updateSummary( item ):
 
 #loops through everything in results and then calls all update functions on each item
 for item in results:
-    print('Entering raw')
-    updateRaw(item)
-    print('Entering lookup')
-    updateLookup(item)
-    print('Entering summary')
-    updateSummary(item)
+    #print('Entering raw')
+    #updateRaw(item)
+    #print('Entering lookup')
+    #updateLookup(item)
+    #print('Entering summary')
+    #updateSummary(item)
 
 cur.close()
 conn.close()
