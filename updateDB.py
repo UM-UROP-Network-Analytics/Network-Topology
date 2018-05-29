@@ -32,10 +32,7 @@ if cur.fetchone() is None:
   start_date = '20180101T000000Z'
   print(start_date)
 else:
-  print('New timestamp of')
   cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
-  real = cur.query
-  print(real)
   start_date = cur.fetchone()[0]
   print (start_date)
 
@@ -70,9 +67,6 @@ def updateRaw( item ):
         cur.execute("INSERT INTO rawtracedata (src, dest, hops, n_hops, timestamp) VALUES (%s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, rt_num_hops, format_ts))
         conn.commit()
     except IntegrityError:
-        real = cur.query
-        print('Rollback for ')
-        print(real)
         conn.rollback()
         pass
 
@@ -264,12 +258,9 @@ def updateSummary( item ):
 
 #loops through everything in results and then calls all update functions on each item
 for item in results:
-    #print('Entering raw')
-    #updateRaw(item)
-    #print('Entering lookup')
-    #updateLookup(item)
-    #print('Entering summary')
-    #updateSummary(item)
+    updateRaw(item)
+    updateLookup(item)
+    updateSummary(item)
 
-    cur.close()
-    conn.close()
+cur.close()
+conn.close()
