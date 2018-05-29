@@ -254,8 +254,11 @@ def updateSummary( item ):
 
 #loops through everything in results and then calls all update functions on each item
 for item in results:
+    print('Entering raw')
     updateRaw(item)
+    print('Entering lookup')
     updateLookup(item)
+    print('Entering summary')
     updateSummary(item)
 
 cur.close()
