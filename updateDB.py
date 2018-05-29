@@ -269,5 +269,5 @@ for item in results:
     #print('Entering summary')
     #updateSummary(item)
 
-cur.close()
-conn.close()
+    cur.close()
+    conn.close()
