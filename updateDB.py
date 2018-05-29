@@ -33,7 +33,9 @@ if cur.fetchone() is None:
   print(start_date)
 else:
   print('New timestamp of')
-  start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD"T"HHMISS"Z"') FROM rawtracedata")
+  start_date = cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
+  real = cur.query
+  print(real)
   print (start_date)
 
 #build and run the query
