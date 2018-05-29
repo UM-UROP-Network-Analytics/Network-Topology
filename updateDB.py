@@ -54,9 +54,6 @@ my_query = {
     },
 }
 results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, request_timeout=100000, size=1000)
-#REMOVE THESE
-cur.close()
-conn.close()
 
 #updates the raw traceroute data table
 def updateRaw( item ):
@@ -272,5 +269,5 @@ for item in results:
     #print('Entering summary')
     #updateSummary(item)
 
-#cur.close()
-#conn.close()
+cur.close()
+conn.close()
