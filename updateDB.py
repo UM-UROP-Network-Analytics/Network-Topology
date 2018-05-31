@@ -13,7 +13,6 @@ es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
 my_index = ["ps_trace-2018*"]
 params = config()
 conn = psycopg2.connect(**params)
-print('Connected to the database')
 cur = conn.cursor()
 my_query = {}
 
@@ -28,13 +27,10 @@ curr_sec = now.strftime("%S")
 end_date = curr_year + now.strftime("%m") + curr_day + 'T' + curr_hr + curr_min + curr_sec + 'Z'
 cur.execute("SELECT * FROM rawtracedata limit 1")
 if cur.fetchone() is None:
-  print('Using default')
   start_date = '20180101T000000Z'
-  print(start_date)
 else:
   cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
   start_date = cur.fetchone()[0]
-  print (start_date)
 
 
 #build and run the query
