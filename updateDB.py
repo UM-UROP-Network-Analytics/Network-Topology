@@ -81,7 +81,7 @@ def updateLookup ( item ):
     else:
         dest_site = 'missing'
     if ':' in rt_src:
-        cur.execute("UPDATE serverlookup SET bandwidth = %s WHERE ipv6 = %s", (true, rt_src))
+        cur.execute("UPDATE serverlookup SET bandwidth = %s WHERE ipv6 = %s", (TRUE, rt_src))
         conn.commit()
         cur.execute("SELECT ipv6 FROM serverlookup WHERE ipv6 = (%s)", (rt_src,))
         if cur.fetchone() is None:
@@ -108,7 +108,7 @@ def updateLookup ( item ):
                 cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv6 = %s", (src_site, rt_src))
                 conn.commit()
     else:
-        cur.execute("UPDATE serverlookup SET bandwidth = %s WHERE ipv4 = %s", (true, rt_src))
+        cur.execute("UPDATE serverlookup SET bandwidth = %s WHERE ipv4 = %s", (TRUE, rt_src))
         conn.commit()
         cur.execute("SELECT ipv4 FROM serverlookup WHERE ipv4 = (%s)", (rt_src,))
         if cur.fetchone() is None:
