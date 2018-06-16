@@ -183,3 +183,11 @@ def updateLookup ( item ):
             if cur == 'missing':
                 cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv4 = %s", (dest_site, rt_dest))
                 conn.commit()
+
+#loops through everything in results and then calls all update functions on each item
+for item in results:
+    updateRaw(item)
+    updateLookup(item)
+
+cur.close()
+conn.close()
