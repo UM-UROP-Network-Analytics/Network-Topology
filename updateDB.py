@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python
 import elasticsearch
 from elasticsearch import helpers
 from datetime import datetime, timedelta
