@@ -29,7 +29,7 @@ cur.execute("SELECT * FROM rawpacketdata limit 1")
 if cur.fetchone() is None:
   start_date = '20180101T000000Z'
 else:
-  cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
+  cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawpacketdata")
   start_date = cur.fetchone()[0]
 
 
@@ -37,7 +37,7 @@ else:
 my_query = {
     "size":1,
     "_source": {
-        "include": [ 'src','dest','hops', 'n_hops', 'timestamp', 'src_host', 'dest_host', 'src_site', 'dest_site']
+        "include": [ 'src','dest','packet_loss', 'timestamp', 'src_host', 'dest_host', 'src_site', 'dest_site']
     },
     'query':{
         'bool':{
@@ -50,7 +50,7 @@ my_query = {
 }
 results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, request_timeout=100000, size=1000)
 
-#updates the raw traceroute data table
+#updates the raw packet loss data table
 def updateRaw( item ):
     rt_src = item['_source']['src']
     rt_dest = item['_source']['dest']
