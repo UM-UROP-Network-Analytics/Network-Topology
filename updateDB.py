@@ -14,7 +14,7 @@ from pathlib import Path
 #checks to see if this process is currently running
 lock_file = Path("/var/lock/updateDB")
 if lock_file.is_file():
-  print('Error: process already running')
+  print('Error: process already running - Check /var/lock/updateDB')
   quit()
 else:
   open(lock_file)
