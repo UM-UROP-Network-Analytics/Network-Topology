@@ -17,7 +17,7 @@ if lock_file.is_file():
   print('Error: process already running - Check /var/lock/updateDB')
   quit()
 else:
-  open(lock_file)
+  open("/var/lock/updateDB")
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
@@ -275,7 +275,7 @@ for item in results:
 
 #remove lock
 print('Removing lock')
-os.remove(lock_file)
+os.remove("/var/lock/updateDB")
 
 print 'This run finished at ' + str(datetime.utcnow())
 cur.close()
