@@ -7,6 +7,17 @@ import numpy as np
 import psycopg2
 from psycopg2 import IntegrityError
 from config import config
+import os
+import os.path 
+from pathlib import Path
+
+#checks to see if this process is currently running
+lock_file = Path("/var/lock/updateDB")
+if lock_file.is_file():
+  print('Error: process already running')
+  quit()
+else:
+  open(lock_file)
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
@@ -262,5 +273,10 @@ for item in results:
     updateLookup(item)
     updateSummary(item)
 
+#remove lock
+print('Removing lock')
+os.remove(lock_file)
+
+print 'This run finished at ' + str(datetime.utcnow())
 cur.close()
 conn.close()
