@@ -7,6 +7,17 @@ import numpy as np
 import psycopg2
 from psycopg2 import IntegrityError
 from config import config
+import os
+import os.path 
+from pathlib import Path
+
+#checks to see if this process is currently running
+lock_file = Path("/var/lock/plDBupdate")
+if lock_file.is_file():
+  print('Error: process already running - Check /var/lock/plDBupdate')
+  quit()
+else:
+  open('/var/lock/plDBupdate', "w+")
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
@@ -37,7 +48,7 @@ else:
 my_query = {
     "size":1,
     "_source": {
-        "include": [ 'src','dest','packet_loss', 'timestamp', 'src_host', 'dest_host', 'src_site', 'dest_site']
+        "include": [ 'src','dest', 'packet_loss', 'timestamp', 'src_host', 'dest_host', 'src_site', 'dest_site']
     },
     'query':{
         'bool':{
@@ -50,7 +61,7 @@ my_query = {
 }
 results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, request_timeout=100000, size=1000)
 
-#updates the raw packet loss data table
+#updates the raw traceroute data table
 def updateRaw( item ):
     rt_src = item['_source']['src']
     rt_dest = item['_source']['dest']
@@ -184,10 +195,34 @@ def updateLookup ( item ):
                 cur.execute("UPDATE serverlookup SET sitename = %s WHERE ipv4 = %s", (dest_site, rt_dest))
                 conn.commit()
 
+#updates the unique count table as well as the summary table
+def updateSummary( item ):
+    rt_src = item['_source']['src']
+    rt_dest = item['_source']['dest']
+    try:
+        cur.execute("INSERT INTO losscount (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
+        conn.commit()
+    except IntegrityError:
+        conn.rollback()
+        cur.execute("SELECT count FROM losscount WHERE src = %s AND dest = %s", (rt_src, rt_dest))
+        current_count = cur.fetchone()[0]
+        if current_count is None:
+            cur.execute("UPDATE losscount SET count = %s WHERE src = %s AND dest = %s", (1, rt_src, rt_dest))
+            conn.commit()
+        else:
+            cur.execute("UPDATE losscount SET count = %s WHERE src = %s AND dest = %s", (current_count+1, rt_src, rt_dest))
+            conn.commit()
+
 #loops through everything in results and then calls all update functions on each item
 for item in results:
     updateRaw(item)
     updateLookup(item)
+    updateSummary(item)
 
+#remove lock
+print('Removing lock')
+os.remove('/var/lock/plDBupdate')
+
+print 'This run finished at ' + str(datetime.utcnow())
 cur.close()
 conn.close()
