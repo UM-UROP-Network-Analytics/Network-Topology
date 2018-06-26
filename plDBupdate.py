@@ -60,6 +60,7 @@ my_query = {
     },
 }
 results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, request_timeout=100000, size=1000)
+print 'Working with ' + str(len(results)) + ' results'
 
 #updates the raw traceroute data table
 def updateRaw( item ):
