@@ -43,6 +43,8 @@ else:
   cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawpacketdata")
   start_date = cur.fetchone()[0]
 
+print(start_date)
+print(end_date)
 
 #build and run the query
 my_query = {
