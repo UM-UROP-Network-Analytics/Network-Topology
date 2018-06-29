@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import elasticsearch
-from elasticsearch import indices
 from datetime import datetime, timedelta
 import time
 import numpy as np
