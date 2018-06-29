@@ -43,9 +43,6 @@ else:
   cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawpacketdata")
   start_date = cur.fetchone()[0]
 
-print(start_date)
-print(end_date)
-
 #build and run the query
 my_query = {
     "size":1,
@@ -61,7 +58,7 @@ my_query = {
         }
     },
 }
-results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, request_timeout=100000, size=1000)
+results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, raise_on_error = True, request_timeout=100000, size=1000)
 
 #updates the raw traceroute data table
 def updateRaw( item ):
