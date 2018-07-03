@@ -62,7 +62,6 @@ results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, raise_o
 
 #updates the raw traceroute data table
 def updateRaw( item ):
-    print 'Updating raw list'
     rt_src = item['_source']['src']
     rt_dest = item['_source']['dest']
     rt_loss = item['_source']['packet_loss']
@@ -78,7 +77,6 @@ def updateRaw( item ):
 
 #updates the server lookup table
 def updateLookup ( item ):
-    print 'Updating lookup table'
     rt_src = item['_source']['src']
     rt_dest = item['_source']['dest']
     src_name = item['_source']['src_host']
@@ -198,7 +196,6 @@ def updateLookup ( item ):
 
 #updates the unique count table as well as the summary table
 def updateSummary( item ):
-    print 'Updating summary table'
     rt_src = item['_source']['src']
     rt_dest = item['_source']['dest']
     try:
