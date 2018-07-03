@@ -21,7 +21,7 @@ else:
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
-my_index = ["ps_packet_loss-2018*"]
+my_index = ["ps_packetloss-2018*"]
 params = config()
 conn = psycopg2.connect(**params)
 cur = conn.cursor()
