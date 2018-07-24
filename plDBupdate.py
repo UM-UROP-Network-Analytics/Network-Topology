@@ -212,15 +212,19 @@ def updateSummary( item ):
             cur.execute("UPDATE losscount SET count = %s WHERE src = %s AND dest = %s", (current_count+1, rt_src, rt_dest))
             conn.commit()
 
+#remove lock
+def rm_lock():
+    print('Removing lock')
+    os.remove('/var/lock/plDBupdate')
+
 #loops through everything in results and then calls all update functions on each item
 for item in results:
     updateRaw(item)
     updateLookup(item)
     updateSummary(item)
 
-#remove lock
-print('Removing lock')
-os.remove('/var/lock/plDBupdate')
+import atexit
+atexit.register(rm_lock)
 
 print 'This run finished at ' + str(datetime.utcnow())
 cur.close()
