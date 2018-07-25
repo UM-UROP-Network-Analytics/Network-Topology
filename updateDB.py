@@ -26,6 +26,7 @@ params = config()
 conn = psycopg2.connect(**params)
 cur = conn.cursor()
 my_query = {}
+print('Database connection established')
 
 #determine start and end times
 now = datetime.utcnow()
@@ -42,7 +43,7 @@ if cur.fetchone() is None:
 else:
   cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawtracedata")
   start_date = cur.fetchone()[0]
-
+print('Dates set')
 
 #build and run the query
 my_query = {
@@ -60,6 +61,7 @@ my_query = {
     },
 }
 results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, request_timeout=100000, size=1000)
+print('Results compiled')
 
 #updates the raw traceroute data table
 def updateRaw( item ):
