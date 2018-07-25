@@ -216,7 +216,8 @@ def updateSummary( item ):
 def rm_lock():
     print('Removing lock')
     os.remove('/var/lock/plDBupdate')
-
+    
+print 'This run started at ' + str(datetime.utcnow())
 #loops through everything in results and then calls all update functions on each item
 for item in results:
     updateRaw(item)

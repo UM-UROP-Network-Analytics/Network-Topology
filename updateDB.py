@@ -273,6 +273,7 @@ def rm_lock():
     os.remove('/var/lock/updateDB')
 
 #loops through everything in results and then calls all update functions on each item
+print 'This run started at ' + str(datetime.utcnow())
 for item in results:
     updateRaw(item)
     updateLookup(item)
