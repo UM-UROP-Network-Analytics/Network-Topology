@@ -15,9 +15,11 @@ from pathlib import Path
 lock_file = Path("/var/lock/plDBupdate")
 if lock_file.is_file():
   print('Error: process already running - Check /var/lock/plDBupdate')
+  print 'This error was detected at ' + str(datetime.now())
   quit()
 else:
   open('/var/lock/plDBupdate', "w+")
+  print 'Lock created at ' + str(datetime.now()) 
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
@@ -26,6 +28,7 @@ params = config()
 conn = psycopg2.connect(**params)
 cur = conn.cursor()
 my_query = {}
+print 'Database connection established at ' + str(datetime.now())
 
 #determine start and end times
 now = datetime.utcnow()
@@ -42,6 +45,7 @@ if cur.fetchone() is None:
 else:
   cur.execute("SELECT to_char(max(timestamp+interval '1 sec'),'YYYYMMDD\"T\"HHMISS\"Z\"') FROM rawpacketdata")
   start_date = cur.fetchone()[0]
+print 'Dates set at ' + str(datetime.now())
 
 #build and run the query
 my_query = {
@@ -59,6 +63,7 @@ my_query = {
     },
 }
 results = elasticsearch.helpers.scan(es, query=my_query, index=my_index, raise_on_error = True, request_timeout=100000, size=1000)
+print 'Results compiled at ' + str(datetime.now())
 
 #updates the raw traceroute data table
 def updateRaw( item ):
@@ -214,11 +219,12 @@ def updateSummary( item ):
 
 #remove lock
 def rm_lock():
-    print('Removing lock')
+    print 'Starting to remove lock at ' + str(datetime.now())
     os.remove('/var/lock/plDBupdate')
+    print 'Lock removed at ' + str(datetime.now())
     
-print 'This run started at ' + str(datetime.utcnow())
 #loops through everything in results and then calls all update functions on each item
+print 'The main loop of this run started at ' + str(datetime.now())
 for item in results:
     updateRaw(item)
     updateLookup(item)
@@ -227,6 +233,6 @@ for item in results:
 import atexit
 atexit.register(rm_lock)
 
-print 'This run finished at ' + str(datetime.utcnow())
+print 'This run finished at ' + str(datetime.now())
 cur.close()
 conn.close()
