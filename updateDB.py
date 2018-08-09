@@ -18,8 +18,11 @@ if lock_file.is_file():
   print 'This error was detected at ' + str(datetime.now())
   quit()
 else:
-  open('/var/lock/updateDB', "w+")
+  print 'Starting to create lock at ' + str(datetime.now())
+  lk_file = open('/var/lock/updateDB', "x")
   print 'Lock created at ' + str(datetime.now()) 
+  lk_file.close()
+  print 'File closed at ' + str(datetime.now())
 
 #connect to the database
 es = elasticsearch.Elasticsearch(['atlas-kibana.mwt2.org:9200'],timeout=60)
