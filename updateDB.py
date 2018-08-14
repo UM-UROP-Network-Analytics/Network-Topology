@@ -19,7 +19,7 @@ if lock_file.is_file():
   quit()
 else:
   print 'Starting to create lock at ' + str(datetime.now())
-  lk_file = open('/var/lock/updateDB', "x")
+  lk_file = open('/var/lock/updateDB', "w")
   print 'Lock created at ' + str(datetime.now()) 
   lk_file.close()
   print 'File closed at ' + str(datetime.now())
