@@ -25,7 +25,7 @@ for row in cur:
 	src = cur.fetchone()[0]
 	dest = cur.fetchone()[1]
 	print 'src is ' + str(src)
-	print ' dest is ' + srt(dest)
+	print ' dest is ' + str(dest)
 
 
 cur.close()
