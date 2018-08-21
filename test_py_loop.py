@@ -22,8 +22,7 @@ my_query = {}
 cur.execute("SELECT * FROM traceroute limit 10")
 
 for row in cur:
-	print row
-
+	print "src is " + str(cur[0]) + " with matching dest of " + str(cur[1])
 
 cur.close()
 conn.close()
