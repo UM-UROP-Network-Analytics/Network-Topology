@@ -209,6 +209,9 @@ def updateSummary( item ):
     rt_dest = item['_source']['dest']
     rt_hops = item['_source']['hops']
     rt_num_hops = item['_source']['n_hops']
+    rt_ts = item['_source']['timestamp']
+    rt_ts = rt_ts / 1000
+    format_ts = time.strftime("%Y-%m-%d %H:%M:%S-0000", time.gmtime(rt_ts))
     if rt_hops is not None:
         if any(x is None for x in rt_hops):
             rt_hops = ['None' if v is None else v for v in rt_hops]
@@ -220,7 +223,7 @@ def updateSummary( item ):
                     last_rt = cur.fetchone()[0]
                     if last_rt is None:
                         last_rt = 0
-                    cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops, rtnum) VALUES (%s, %s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops, last_rt+1))
+                    cur.execute("INSERT INTO traceroute (src, dest, hops, cnt, n_hops, rtnum, min_ts, max_ts) VALUES (%s, %s, %s, %s, %s, %s)", (rt_src, rt_dest, rt_hops, 1, rt_num_hops, last_rt+1, format_ts, format_ts))
                     conn.commit()
                     try:
                         cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
@@ -239,7 +242,7 @@ def updateSummary( item ):
                     conn.rollback()
                     cur.execute("SELECT cnt FROM traceroute WHERE src = %s AND dest = %s AND hops = %s", (rt_src, rt_dest, my_hops))
                     current_count = cur.fetchone()[0]
-                    cur.execute("UPDATE traceroute SET cnt = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, rt_src, rt_dest, my_hops))
+                    cur.execute("UPDATE traceroute SET cnt = %s, max_ts = %s WHERE src = %s AND dest = %s AND hops = %s", (current_count+1, format_ts rt_src, rt_dest, my_hops))
                     conn.commit()
                     try:
                         cur.execute("INSERT INTO routesummary (src, dest, count) VALUES (%s, %s, %s)", (rt_src, rt_dest, 1))
