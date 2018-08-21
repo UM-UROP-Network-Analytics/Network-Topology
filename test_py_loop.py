@@ -19,13 +19,10 @@ conn = psycopg2.connect(**params)
 cur = conn.cursor()
 my_query = {}
 
-cur.execute("SELECT * FROM rawtracedata limit 10")
+cur.execute("SELECT * FROM traceroute limit 10")
 
 for row in cur:
-	src = cur.fetchone()[0]
-	dest = cur.fetchone()[1]
-	print 'src is ' + str(src)
-	print ' dest is ' + str(dest)
+	print row
 
 
 cur.close()
