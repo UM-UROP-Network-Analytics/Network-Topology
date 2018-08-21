@@ -24,7 +24,6 @@ for row in cur:
 	#find our current minimum timestamp from all of the rawtracedata
 	cur2.execute("SELECT min(timestamp) FROM rawtracedata WHERE src = %s AND dest = %s AND hops = %s", (tbl_src, tbl_dst, tbl_hop))
 	tr_min_ts = cur2.fetchone()[0]
-	print(tr_min_ts)
 	#add this to our traceroute table 
 	cur2.execute("UPDATE traceroute SET min_ts = %s WHERE src = %s AND dest = %s AND rtnum = %s", (tr_min_ts, tbl_src, tbl_dst, tbl_rt_num))
 	conn.commit()
