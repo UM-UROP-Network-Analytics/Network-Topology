@@ -4,7 +4,7 @@ from elasticsearch import helpers
 from datetime import datetime, timedelta
 import time
 import numpy as np
-import psycopg2-binary
+from psycopg2-binary import psycopg2
 from psycopg2-binary import IntegrityError
 from config import config
 import os
