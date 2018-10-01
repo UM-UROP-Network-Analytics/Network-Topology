@@ -4,8 +4,8 @@ from elasticsearch import helpers
 from datetime import datetime, timedelta
 import time
 import numpy as np
-from psycopg2-binary import psycopg2
-from psycopg2-binary import IntegrityError
+import psycopg2
+from psycopg2 import IntegrityError
 from config import config
 import os
 import os.path 
