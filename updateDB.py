@@ -102,15 +102,13 @@ def updateLookup ( item ):
         conn.commit()
         cur.execute("SELECT ipv6 FROM serverlookup WHERE ipv6 = (%s)", (rt_src,))
         if cur.fetchone() is None:
-            cur.execute("SELECT domain FROM serverlookup WHERE domain = (%s)", (src_name,))
+            cur.execute("SELECT ipv4 FROM serverlookup WHERE domain = (%s)", (src_name,))
             if cur.fetchone() is None:
                 cur.execute("INSERT INTO serverlookup (domain, ipv6, sitename) VALUES (%s, %s, %s)", (src_name, rt_src, src_site))
                 conn.commit()
             else:
-                cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (src_name,))
-                if not str(cur).upper().isupper():
-                    cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE domain = %s", (src_name, rt_src, src_name))
-                    conn.commit()
+                cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE domain = %s", (src_name, rt_src, src_name))
+                conn.commit()
                 cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (src_name,))
                 if cur == 'missing':
                     cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (src_site, src_name))
@@ -134,10 +132,8 @@ def updateLookup ( item ):
                 cur.execute("INSERT INTO serverlookup (domain, ipv4, sitename) VALUES (%s, %s, %s)", (src_name, rt_src, src_site))
                 conn.commit()
             else:
-                cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (src_name,))
-                if not str(cur).upper().isupper():
-                    cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE domain = %s", (src_name, rt_src, src_name))
-                    conn.commit()
+                cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE domain = %s", (src_name, rt_src, src_name))
+                conn.commit()
                 cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (src_name,))
                 if cur == 'missing':
                     cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (src_site, src_name))
@@ -159,10 +155,8 @@ def updateLookup ( item ):
                 cur.execute("INSERT INTO serverlookup (domain, ipv6, sitename) VALUES (%s, %s, %s)", (dest_name, rt_dest, dest_site))
                 conn.commit()
             else:
-                cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (dest_name,))
-                if not str(cur).upper().isupper():
-                    cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE domain = %s", (dest_name, rt_dest, dest_name))
-                    conn.commit()
+                cur.execute("UPDATE serverlookup SET domain = %s, ipv6 = %s WHERE domain = %s", (dest_name, rt_dest, dest_name))
+                conn.commit()
                 cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (dest_name,))
                 if cur == 'missing':
                     cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (dest_site, dest_name))
@@ -184,10 +178,8 @@ def updateLookup ( item ):
                 cur.execute("INSERT INTO serverlookup (domain, ipv4, sitename) VALUES (%s, %s, %s)", (dest_name, rt_dest, dest_site))
                 conn.commit()
             else:
-                cur.execute("SELECT domain FROM serverlookup WHERE domain = %s", (dest_name,))
-                if not str(cur).upper().isupper():
-                    cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE domain = %s", (dest_name, rt_dest, dest_name))
-                    conn.commit()
+                cur.execute("UPDATE serverlookup SET domain = %s, ipv4 = %s WHERE domain = %s", (dest_name, rt_dest, dest_name))
+                conn.commit()
                 cur.execute("SELECT sitename FROM serverlookup WHERE domain = %s", (dest_name,))
                 if cur == 'missing':
                     cur.execute("UPDATE serverlookup SET sitename = %s WHERE domain = %s", (dest_site, dest_name))
